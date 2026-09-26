@@ -1,0 +1,30 @@
+# Python virtual environment
+.venv/
+__pycache__/
+
+# Local notes
+command.txt
+
+# Books
+*.pdf
+
+# Generated audio and work folders
+*.m4b
+*.mp3
+*.wav
+*_audiobook_work/
+*.cleaned.txt
+
+# Downloaded Piper voice models (large; re-download with piper.download_voices)
+voices/
+
+# Voice samples
+voice_samples/
+
+# Build output
+dist/
+build/
+*.egg-info/
+
+# Backup of the pre-package scripts (kept locally, not pushed)
+previous_version/

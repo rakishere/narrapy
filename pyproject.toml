@@ -1,0 +1,42 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "narrapy"
+version = "0.1.0"
+description = "Turn PDFs into audiobooks with chapters, using local neural text-to-speech (Kokoro or Piper)."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Rakesh Sharma" }]
+requires-python = ">=3.10,<3.13"
+keywords = ["pdf", "audiobook", "tts", "text-to-speech", "kokoro", "piper", "m4b"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
+]
+dependencies = [
+    "pymupdf",
+    "soundfile",
+    "numpy",
+    "kokoro",
+    "piper-tts",
+]
+
+[project.urls]
+Homepage = "https://github.com/rakishere/narrapy"
+Issues = "https://github.com/rakishere/narrapy/issues"
+
+[project.scripts]
+narrapy = "narrapy.cli:main"
+
+[tool.hatch.build.targets.sdist]
+include = ["src/narrapy", "README.md", "LICENSE", "pyproject.toml"]
