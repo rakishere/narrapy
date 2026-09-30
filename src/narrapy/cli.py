@@ -1,4 +1,10 @@
 #!/usr/bin/env python3
+# narrapy/cli.py - part of narrapy (https://github.com/rakishere/narrapy)
+# Author: Rakesh Sharma
+# Copyright (c) 2026 Rakesh Sharma
+# Licensed under the MIT License. See the LICENSE file for details.
+# SPDX-License-Identifier: MIT
+
 """
 narrapy - Convert a PDF into an audiobook (M4B with chapters, or MP3s)
 using fully local text-to-speech: Kokoro or Piper.
@@ -41,14 +47,30 @@ from .voices import main as voices_main, voice_list_text
 # ---------------------------------------------------------------------------
 
 def normalize_for_compare(line):
-    """Turn a line into a pattern so 'Page 12' and 'Page 13' look identical."""
-    return re.sub(r"\d+", "#", line.strip().lower())
+    """Turn a line into a pattern so 'Page 12' and 'Page 13' look identical.
+    Whitespace is collapsed because footers are often padded differently per page."""
+    return re.sub(r"\s+", " ", re.sub(r"\d+", "#", line.strip().lower()))
+
+
+def drop_doubled_lines(text):
+    """Remove a line that repeats the line just before it. Some PDFs draw bold
+    or shadowed text twice, which would otherwise be read aloud twice. The copy
+    can also be glued to the start of the next line ("X" then "X more text")."""
+    lines = []
+    for line in text.split("\n"):
+        s, prev = line.strip(), lines[-1].strip() if lines else ""
+        if s and s == prev:
+            continue
+        if len(prev) >= 10 and s.startswith(prev):
+            line = s[len(prev):].lstrip()
+        lines.append(line)
+    return "\n".join(lines)
 
 
 def page_blocks(page):
     """Return the text blocks of a page, in reading order, as plain strings."""
     blocks = page.get_text("blocks", sort=True)
-    return [b[4].strip() for b in blocks if b[6] == 0 and b[4].strip()]
+    return [drop_doubled_lines(b[4].strip()) for b in blocks if b[6] == 0 and b[4].strip()]
 
 
 def find_repeated_edges(doc, first, last):
@@ -63,8 +85,9 @@ def find_repeated_edges(doc, first, last):
         pages += 1
         edges = set(blocks[:2] + blocks[-2:])
         for b in edges:
-            if len(b) < 120:
-                counts[normalize_for_compare(b)] += 1
+            n = normalize_for_compare(b)
+            if len(n) < 120:
+                counts[n] += 1
     if pages < 4:
         return set()
     return {text for text, n in counts.items() if n >= max(3, pages * 0.3)}

@@ -1,3 +1,9 @@
+# narrapy/espeak_fix.py - part of narrapy (https://github.com/rakishere/narrapy)
+# Author: Rakesh Sharma
+# Copyright (c) 2026 Rakesh Sharma
+# Licensed under the MIT License. See the LICENSE file for details.
+# SPDX-License-Identifier: MIT
+
 """
 Quiet a harmless Windows-only cleanup error from phonemizer (used by Kokoro).
 

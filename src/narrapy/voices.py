@@ -1,4 +1,10 @@
 #!/usr/bin/env python3
+# narrapy/voices.py - part of narrapy (https://github.com/rakishere/narrapy)
+# Author: Rakesh Sharma
+# Copyright (c) 2026 Rakesh Sharma
+# Licensed under the MIT License. See the LICENSE file for details.
+# SPDX-License-Identifier: MIT
+
 """
 narrapy voices - Make and play a short sample of each voice so you can pick one.
 
