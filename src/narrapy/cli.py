@@ -194,7 +194,13 @@ class KokoroEngine:
     sample_rate = 24000
 
     def __init__(self, voice, speed):
-        from kokoro import KPipeline
+        try:
+            from kokoro import KPipeline
+        except ImportError as e:
+            if "Application Control policy" not in str(e):
+                raise
+            sys.exit("Windows Smart App Control blocked an unsigned spaCy DLL that Kokoro needs.\n"
+                     "Fix: pip install \"spacy==3.7.5\" (or turn off Smart App Control, or use WSL).")
         lang = voice[0] if voice and voice[0] in "abefhijpz" else "a"
         self.pipeline = KPipeline(lang_code=lang)
         self.voice = voice
@@ -321,7 +327,9 @@ listen to voices before choosing one (plays a ~10 second sample of each):
 def parse_args(argv=None):
     p = argparse.ArgumentParser(
         prog="narrapy",
-        description="Convert a PDF into an audiobook with local TTS.",
+        usage="%(prog)s [options] pdf\n       %(prog)s voices [voice options]   (listen to voice samples)",
+        description="Convert a PDF into an audiobook with local TTS.\n\n"
+                    "To hear the narrator voices, run: narrapy voices  (see: narrapy voices --help)",
         epilog=EXAMPLES + "\n" + voice_list_text(),
         formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("pdf", help="Path to the PDF file")

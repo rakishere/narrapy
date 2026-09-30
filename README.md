@@ -130,7 +130,7 @@ Kokoro runs on the CPU. On a 10-core laptop it produces about 1.5 minutes of aud
 ## Troubleshooting
 
 - **`No module named 'soundfile'` (or similar)** - you ran the system Python. Activate the virtual environment first, or use `run.ps1` from a source checkout.
-- **"An Application Control policy has blocked this file"** - Windows Smart App Control blocked a new, unsigned spaCy DLL. Install an older build: `pip install "spacy==3.8.7"`.
+- **"An Application Control policy has blocked this file"** - Windows Smart App Control blocked a new, unsigned spaCy DLL. Install an older build: `pip install "spacy==3.7.5"`. Narrapy prints this fix when it detects the block. To see the narrator voices, run `narrapy voices`.
 - **"No module named pip" on the first Kokoro run** - Kokoro downloads the spaCy English model with pip. Environments made by `uv venv` have no pip; run `python -m ensurepip` or `uv pip install pip`, then retry.
 - **"Cleanup: removed ... espeak-ng.dll temp folder(s)"** - harmless and Windows-only. Kokoro's phonemizer copies espeak-ng.dll to a temp folder and can't delete it at exit while it is still loaded, so Narrapy removes those folders on the next run.
 - **"Almost no text found"** - the PDF is scanned images. Run OCR on it first.

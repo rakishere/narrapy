@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "narrapy"
-version = "0.1.0"
+version = "0.1.1"
 description = "Turn PDFs into audiobooks with chapters, using local neural text-to-speech (Kokoro or Piper)."
 readme = "README.md"
 license = "MIT"
@@ -37,6 +37,11 @@ Issues = "https://github.com/rakishere/narrapy/issues"
 
 [project.scripts]
 narrapy = "narrapy.cli:main"
+
+# Local dev only (not published): spaCy 3.8.x's unsigned lexeme.pyd is blocked
+# by Windows Smart App Control; 3.7.5 is allowed.
+[tool.uv]
+constraint-dependencies = ["spacy==3.7.5"]
 
 [tool.hatch.build.targets.sdist]
 include = ["src/narrapy", "README.md", "LICENSE", "pyproject.toml"]
