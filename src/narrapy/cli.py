@@ -55,14 +55,16 @@ def normalize_for_compare(line):
 def drop_doubled_lines(text):
     """Remove a line that repeats the line just before it. Some PDFs draw bold
     or shadowed text twice, which would otherwise be read aloud twice. The copy
-    can also be glued to the start of the next line ("X" then "X more text")."""
+    can also be glued to the next line: "X" / "X Y" / "Y" is read as "X" / "Y"."""
+    source = text.split("\n")
     lines = []
-    for line in text.split("\n"):
+    for i, line in enumerate(source):
         s, prev = line.strip(), lines[-1].strip() if lines else ""
         if s and s == prev:
             continue
-        if len(prev) >= 10 and s.startswith(prev):
-            line = s[len(prev):].lstrip()
+        following = source[i + 1].strip() if i + 1 < len(source) else ""
+        if prev and following and s.split() == (prev + " " + following).split():
+            continue
         lines.append(line)
     return "\n".join(lines)
 

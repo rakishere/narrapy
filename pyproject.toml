@@ -38,6 +38,14 @@ Issues = "https://github.com/rakishere/narrapy/issues"
 [project.scripts]
 narrapy = "narrapy.cli:main"
 
+# Dev tools (not published). Run the tests with: uv run pytest
+[dependency-groups]
+dev = ["pytest"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
 # Local dev only (not published): spaCy 3.8.x's unsigned lexeme.pyd is blocked
 # by Windows Smart App Control; 3.7.5 is allowed.
 [tool.uv]
