@@ -28,3 +28,6 @@ build/
 
 # Backup of the pre-package scripts (kept locally, not pushed)
 previous_version/
+
+# Visual Studio / IDE settings
+.vs/
